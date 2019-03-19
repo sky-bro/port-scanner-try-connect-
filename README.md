@@ -1,0 +1,2 @@
+- 可能需要安装`pip3 install IPy`
+- 运行方式：`python3 scanner.py`
