@@ -80,44 +80,6 @@ class Scanner(object):
         self.root.columnconfigure(1, weight=3)
         self.root.rowconfigure(4, weight=1)
 
-    # def check(self):
-    #     pass
-
-    # def check_open(self):
-    #     while True:
-    #         try:
-    #             ip, port = self.q.get_nowait()
-    #             self.get_ip_status(ip, port)
-    #         except queue.Empty as e:
-    #             if self.emptyQ.is_set():
-    #                 return
-    #             time.sleep(random.random())
-    #             print("empty")
-    #             pass
-    #
-    # def producer(self, hosts, start_port, end_port):
-    #     for ip in hosts:
-    #         for port in range(start_port, end_port+1):
-    #             self.q.put((str(ip), port))
-    #     self.emptyQ.set()
-    #
-    # def consumer(self, thread_num):
-    #     time_start=time.time()
-    #     # 消费者
-    #     threads = []
-    #     for i in range(thread_num):
-    #         t = threading.Thread(target=self.check_open)
-    #         t.start()
-    #         threads.append(t)
-    #
-    #     for t in threads:
-    #         t.join()
-    #     time_end=time.time()
-    #     msg = '--'*5 + 'FINISH LINE' + '--'*5 + '\ntook {0} seconds'.format(time_end-time_start)
-    #     # self.display_info.insert(tkinter.END,msg)
-    #     self.text_result.insert(tkinter.END, msg)
-    #     print(msg, end='')
-
     def scan(self):
         # self.check()
         # self.display_info.delete(0, tkinter.END);
@@ -138,8 +100,11 @@ class Scanner(object):
                 ip_high = IP(m.group(2)).int()
                 hosts = range(ip_low, ip_high+1)
             except Exception as ex:
-                print(err)
-                return
+                try:
+                    hosts = IP(socket.gethostbyname(ip_range))
+                except Exception as err:
+                    print(err)
+                    return
 
         def work():
             start_time = time.time()
